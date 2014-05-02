@@ -20,4 +20,12 @@
 *.out
 *.app
 
-thirdparty\gtest-1.7.0\msvc\YASim\*
+# Visual build artifacts
+*.ilk
+*.pdb
+*.idb
+*.tlog
+*.sdf
+*.opensdf
+*.lastbuildstate
+*.log

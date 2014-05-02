@@ -19,3 +19,5 @@
 *.exe
 *.out
 *.app
+
+thirdparty\gtest-1.7.0\msvc\YASim\*

@@ -18,6 +18,7 @@ public:
 
 	void push_back(const element_type& elem) { sum += elem; ++elements; container.push_back(elem); };
 	double getAverage() const { if(elements) return static_cast<double>(sum) / elements; else return 0; }
+	int getElements() const { return elements; }
 
 private:
 	Container& container;

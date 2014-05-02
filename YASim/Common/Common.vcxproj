@@ -75,6 +75,18 @@
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Movable.h" />
+    <ClInclude Include="MovableI.h" />
+    <ClInclude Include="Vector.h" />
+    <ClInclude Include="ThinkableI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Movable.cpp" />
+    <ClCompile Include="MovableI.cpp" />
+    <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="ThinkableI.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

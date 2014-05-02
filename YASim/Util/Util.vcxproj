@@ -76,9 +76,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AverageCounter.h" />
+    <ClInclude Include="ScopedStoper.h" />
     <ClInclude Include="Stoper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AverageCounter.cpp" />
+    <ClCompile Include="ScopedStoper.cpp" />
     <ClCompile Include="Stoper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

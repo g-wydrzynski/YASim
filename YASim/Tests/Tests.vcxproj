@@ -91,7 +91,9 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Stoper.cpp" />
+    <ClCompile Include="AverageCounterTest.cpp" />
+    <ClCompile Include="ScopedStoperTest.cpp" />
+    <ClCompile Include="StoperTest.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Tests.cpp" />
   </ItemGroup>

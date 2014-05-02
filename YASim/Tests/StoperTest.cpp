@@ -24,6 +24,17 @@ TEST(Stoper, IsStopGreaterThanStart)
 	EXPECT_EQ(mili_3.count(), st.getMiliseconds().count());
 }
 
+TEST(Stoper, StopCountsWhenCalled)
+{
+	std::chrono::milliseconds mili_3(3);
+	std::chrono::milliseconds noTimeM(0);
+	Stoper st;
+	st.stop();
+	std::this_thread::sleep_for(mili_3);
+	EXPECT_EQ(noTimeM, st.getMiliseconds());
+	EXPECT_EQ(noTimeM.count(), st.getMiliseconds().count());
+}
+
 TEST(Stoper, IsGetDurationSameAsGetMiliseconds)
 {
 	Stoper st;

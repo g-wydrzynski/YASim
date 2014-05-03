@@ -33,3 +33,44 @@ TEST(VectorTest, IsCorrectlyChanged)
 	EXPECT_EQ( 1, pos_.getY() );
 }
 
+TEST(VectorTest, IsEqual)
+{
+	Vector pos(3, 5);
+	Vector pos_(3, 5);
+
+	EXPECT_EQ( pos_, pos );
+	EXPECT_EQ( pos_.getX(), pos.getX() );
+	EXPECT_EQ( pos_.getY(), pos.getY() );
+
+	pos.setX(2);
+	pos.setY(4);
+	pos_.setX(2);
+	pos_.setY(4);
+
+	EXPECT_EQ( pos_, pos );
+	EXPECT_EQ( pos_.getX(), pos.getX() );
+	EXPECT_EQ( pos_.getY(), pos.getY() );
+}
+
+TEST(VectorTest, IsAdditive)
+{
+	Vector pos(3, 5);
+	Vector pos_(6, 2);
+	Vector res = pos + pos_;
+
+	EXPECT_EQ( res, pos + pos_ );
+	EXPECT_EQ( res.getX(), pos.getX() + pos_.getX() );
+	EXPECT_EQ( res.getY(), pos.getY() + pos_.getY());
+}
+
+TEST(VectorTest, IsAdditiveToSelf)
+{
+	Vector pos(3, 5);
+	Vector pos_(6, 2);
+	Vector poscpy( pos );
+	pos += pos_;
+
+	EXPECT_EQ( pos, poscpy + pos_ );
+	EXPECT_EQ( pos.getX(), poscpy.getX() + pos_.getX() );
+	EXPECT_EQ( pos.getY(), poscpy.getY() + pos_.getY());
+}

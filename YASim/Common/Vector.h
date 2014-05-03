@@ -20,6 +20,8 @@ public:
 	value_type getY() const { return y; }
 
 	bool operator==(const Vector& rhs) const { return x == rhs.x && y == rhs.y; }
+	Vector operator+(const Vector& rhs) const { return Vector(x + rhs.x, y + rhs.y); }
+	void operator+=(const Vector& rhs) { x += rhs.x; y += rhs.y; }
 
 private:
 	value_type x;

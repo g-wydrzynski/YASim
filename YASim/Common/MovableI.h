@@ -1,11 +1,11 @@
 #pragma once
 
+#include "Vector.h"
+
 namespace YASim
 {
 namespace Common
 {
-
-class Vector;
 
 class MovableI
 {
@@ -25,8 +25,10 @@ public:
 	virtual void setSpeed(const Vector&) = 0;
 	virtual const Vector& getSpeed() const = 0;
 
-	virtual const Vector& getMaxAcceleration() const = 0;
-	virtual const Vector& getMaxSpeed() const = 0;
+	virtual const Vector::value_type& getMaxAcceleration() const = 0;
+	virtual const Vector::value_type& getMaxSpeed() const = 0;
+
+	virtual void move() = 0;
 };
 
 }

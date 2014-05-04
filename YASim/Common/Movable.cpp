@@ -6,12 +6,12 @@ namespace Common
 {
 
 Movable::Movable(void)
-: position(0, 0), target(0, 0), acceleration(0, 0), speed(0, 0)
+: position(0, 0), target(0, 0), acceleration(0, 0), speed(0, 0), accVecPosX(0), accVecPosY(0)
 {
 }
 
 Movable::Movable(const Vector& _pos)
-: position(_pos), target(0, 0), acceleration(0, 0), speed(0, 0)
+: position(_pos), target(0, 0), acceleration(0, 0), speed(0, 0), accVecPosX(0), accVecPosY(0)
 {
 }
 
@@ -24,6 +24,41 @@ void Movable::move()
 	speed += acceleration;
 	check_max<_speed>(speed);
 	position += speed;
+}
+
+void Movable::tick()
+{
+	const AccVector& vec( getAccVector() );
+
+	Vector::value_type resX(getAcceleration().getX()), resY(getAcceleration().getY());
+	Vector::value_type spX(getSpeed().getX()), spY(getSpeed().getY());
+
+	if( target.getX() == position.getX() )
+	{
+		resX = 0;
+		accVecPosX = 0;
+		spX = 0;
+		//reset speed ?
+	}
+	else
+	{
+		if( abs(resX + speed.getX()) > abs(target.getX() - position.getX()) )//acc zeroing condition
+		{
+			resX = 0;
+			accVecPosX = 0;
+		}
+		else if(accVecPosX < vec.size())//still accelerating
+		{
+			resX += (target.getX() < position.getX() ? -1 : 1) * vec[accVecPosX++];
+		}
+	}
+	if(accVecPosY < vec.size())
+	{
+		resY += (target.getY() < position.getY() ? -1 : 1) * vec[accVecPosY++];
+	}
+
+	setAcceleration(Vector(resX, resY));
+	setSpeed(Vector(spX, spY));//use acc ??
 }
 
 template<>

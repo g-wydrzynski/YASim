@@ -5,14 +5,5 @@ namespace YASim
 namespace Common
 {
 
-MovableI::MovableI(void)
-{
-}
-
-
-MovableI::~MovableI(void)
-{
-}
-
 }
 }

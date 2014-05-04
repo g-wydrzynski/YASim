@@ -8,7 +8,7 @@ namespace Common
 class Vector
 {
 public:
-	typedef size_t value_type;
+	typedef signed long value_type;
 	
 	Vector(void);
 	Vector(value_type _x, value_type _y);

@@ -2,18 +2,26 @@
 #include "YASim/Common/Movable.h"
 
 using YASim::Common::Movable;
+using YASim::Common::MovableI;
 using YASim::Common::Vector;
 
 struct TestMovable : Movable
 {
-	TestMovable():Movable(), acc(15), sp(20) {}
-	TestMovable(const Vector& vec):Movable(vec){}
+	TestMovable():Movable(), acc(15), sp(20) { init(); }
+	TestMovable(const Vector& vec):Movable(vec){ init(); }
 
 	virtual const Vector::value_type& getMaxAcceleration() const override {return acc;}
 	virtual const Vector::value_type& getMaxSpeed() const override {return sp;}
 
+	virtual const AccVector& getAccVector() const override { return avec;}
+
 	Vector::value_type acc;
 	Vector::value_type sp;
+	AccVector avec;
+	void init()
+	{
+		avec.push_back(1);avec.push_back(2);avec.push_back(1);
+	}
 };
 
 struct MovableTest : public testing::Test
@@ -135,3 +143,143 @@ TEST_F(MovableTest, IsLimitInMoveWorking)
 	EXPECT_EQ( m1.getAcceleration(), Vector(4, 5) );
 	EXPECT_EQ( m1.getPosition(), Vector(4, 8) + m1.getSpeed() );
 }
+
+TEST_F(MovableTest, IsTickWorking)
+{
+	TestMovable m;
+	m.setTarget(Vector(3,5));
+
+	const MovableI::AccVector& vec( m.getAccVector() );
+
+	m.tick();
+	EXPECT_EQ( m.getSpeed(), Vector(0, 0) );
+	EXPECT_EQ( m.getAcceleration(), Vector(vec[0], vec[0]) );
+}
+
+TEST_F(MovableTest, IsTickRepeatableWorking)
+{
+	TestMovable m;
+	m.setTarget(Vector(30,50));
+
+	const MovableI::AccVector& vec( m.getAccVector() );
+
+	m.tick();
+	
+	m.tick();
+	EXPECT_EQ( m.getAcceleration(), Vector(vec[0] + vec[1], vec[0] + vec[1]) );
+	EXPECT_EQ( m.getSpeed(), Vector(0, 0) );
+	
+	m.tick();
+	EXPECT_EQ( m.getAcceleration(), Vector(vec[0] + vec[1] + vec[2], vec[0] + vec[1] + vec[2]) );
+	EXPECT_EQ( m.getSpeed(), Vector(0, 0) );
+	
+	m.tick();
+	EXPECT_EQ( m.getAcceleration(), Vector(vec[0] + vec[1] + vec[2], vec[0] + vec[1] + vec[2]) );
+	EXPECT_EQ( m.getSpeed(), Vector(0, 0) );
+}
+
+TEST_F(MovableTest, IsTickMoving)
+{
+	TestMovable m;
+	m.setTarget(Vector(30,50));
+
+	const MovableI::AccVector& vec( m.getAccVector() );
+
+	m.tick();
+	m.move();
+	
+	EXPECT_EQ( m.getAcceleration(), Vector(vec[0], vec[0]) );
+	EXPECT_EQ( m.getSpeed(), Vector(vec[0], vec[0]) );
+	EXPECT_EQ( m.getPosition(), Vector(vec[0], vec[0]) );
+}
+
+TEST_F(MovableTest, IsTickMovingRepeatable)
+{
+	TestMovable m;
+	m.setTarget(Vector(30,50));
+
+	const MovableI::AccVector& vec( m.getAccVector() );
+
+	m.tick();
+	m.move();
+	
+	EXPECT_EQ( m.getAcceleration(), Vector(vec[0], vec[0]) );
+	EXPECT_EQ( m.getSpeed(), Vector(vec[0], vec[0]) );
+	EXPECT_EQ( m.getPosition(), Vector(vec[0], vec[0]) );
+
+	m.tick();
+	m.move();
+	
+	EXPECT_EQ( m.getAcceleration(), Vector(vec[0] + vec[1], vec[0] + vec[1]) );
+	EXPECT_EQ( m.getSpeed(), Vector(vec[0] + vec[0] + vec[1], vec[0] + vec[0] + vec[1]) );
+	EXPECT_EQ( m.getPosition(), Vector(vec[0] + vec[0] + vec[0] + vec[1], vec[0] + vec[0] + vec[0] + vec[1]) );
+
+	m.tick();
+	m.move();
+
+	EXPECT_EQ( m.getAcceleration(), Vector(vec[0] + vec[1] + vec[2], vec[0] + vec[1] + vec[2]) );
+	EXPECT_EQ( m.getSpeed(), Vector(vec[0] + vec[0] + vec[1] + vec[0] + vec[1] + vec[2]
+				, vec[0] + vec[0] + vec[1] + vec[0] + vec[1] + vec[2]) );
+	EXPECT_EQ( m.getPosition(), Vector(vec[0] + vec[0] + vec[0] + vec[1] + vec[0] + vec[0] + vec[1] + vec[0] + vec[1] + vec[2]
+				, vec[0] + vec[0] + vec[0] + vec[1] + vec[0] + vec[0] + vec[1] + vec[0] + vec[1] + vec[2]) );
+
+	m.tick();
+	m.move();
+
+	EXPECT_EQ( m.getAcceleration(), Vector(vec[0] + vec[1] + vec[2], vec[0] + vec[1] + vec[2]) );
+	EXPECT_EQ( m.getSpeed(), Vector(vec[0] + vec[0] + vec[1] + vec[0] + vec[1] + vec[2] + vec[0] + vec[1] + vec[2]
+				, vec[0] + vec[0] + vec[1] + vec[0] + vec[1] + vec[2] + vec[0] + vec[1] + vec[2]) );
+	EXPECT_EQ( m.getPosition(), Vector(vec[0] + vec[0] + vec[0] + vec[1] + vec[0] + vec[0] + vec[1] + vec[0] + vec[1] + vec[2] + vec[0] + vec[0] + vec[1] + vec[0] + vec[1] + vec[2] + vec[0] + vec[1] + vec[2]
+				, vec[0] + vec[0] + vec[0] + vec[1] + vec[0] + vec[0] + vec[1] + vec[0] + vec[1] + vec[2] + vec[0] + vec[0] + vec[1] + vec[0] + vec[1] + vec[2] + vec[0] + vec[1] + vec[2]) );
+}
+
+TEST_F(MovableTest, IsTickMovingBackwards)
+{
+	TestMovable m;
+	m.setPosition(Vector(30,50));
+	m.setTarget(Vector(0,0));
+
+	const MovableI::AccVector& vec( m.getAccVector() );
+
+	m.tick();
+	m.move();
+	
+	EXPECT_EQ( m.getAcceleration(), Vector(-vec[0], -vec[0]) );
+	EXPECT_EQ( m.getSpeed(), Vector(-vec[0], -vec[0]) );
+	EXPECT_EQ( m.getPosition(), Vector( 30 - vec[0], 50 - vec[0]) );
+}
+
+TEST_F(MovableTest, IsTickStopping)
+{
+	TestMovable m;
+	Vector start(10,10);
+	Vector target(12,16);
+	m.setPosition(start);
+	m.setTarget(target);
+
+	const MovableI::AccVector& vec( m.getAccVector() );
+
+	m.tick();
+	m.move();
+
+	EXPECT_EQ( m.getAcceleration(), Vector(vec[0], vec[0]) );
+	EXPECT_EQ( m.getSpeed(), Vector(vec[0], vec[0]) );
+	EXPECT_EQ( m.getPosition(), start + Vector(vec[0], vec[0]) );
+
+	m.tick();
+	m.move();
+
+	// TRICKY
+	EXPECT_EQ( m.getAcceleration(), Vector(0, vec[0] + vec[1]) );
+	EXPECT_EQ( m.getSpeed(), Vector(vec[0], vec[0] + vec[0] + vec[1]) );
+	EXPECT_EQ( m.getPosition(), start + Vector(vec[0] + vec[0], vec[0] + vec[0] + vec[0] + vec[1]) );
+
+	m.tick();
+	m.move();
+
+	EXPECT_EQ( m.getAcceleration(), Vector(0, vec[0] + vec[1] + vec[2]) );
+	EXPECT_EQ( m.getSpeed(), Vector(0, vec[0] + vec[0] + vec[1] + vec[0] + vec[1] + vec[2]) );
+	EXPECT_EQ( m.getPosition(), Vector(target.getX(), start.getX() + vec[0] + vec[0] + vec[0] + vec[1] + vec[0] + vec[0] + vec[1] + vec[0] + vec[1] + vec[2]) );
+}
+
+//tick/move change target tick/move -> acc change?

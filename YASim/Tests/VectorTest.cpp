@@ -58,9 +58,9 @@ TEST(VectorTest, IsAdditive)
 	Vector pos_(6, 2);
 	Vector res = pos + pos_;
 
-	EXPECT_EQ( res, pos + pos_ );
-	EXPECT_EQ( res.getX(), pos.getX() + pos_.getX() );
-	EXPECT_EQ( res.getY(), pos.getY() + pos_.getY());
+	EXPECT_EQ( res, Vector( 9, 7 ) );
+	EXPECT_EQ( res.getX(), 9 );
+	EXPECT_EQ( res.getY(), 7);
 }
 
 TEST(VectorTest, IsAdditiveToSelf)
@@ -70,7 +70,29 @@ TEST(VectorTest, IsAdditiveToSelf)
 	Vector poscpy( pos );
 	pos += pos_;
 
-	EXPECT_EQ( pos, poscpy + pos_ );
-	EXPECT_EQ( pos.getX(), poscpy.getX() + pos_.getX() );
-	EXPECT_EQ( pos.getY(), poscpy.getY() + pos_.getY());
+	EXPECT_EQ( pos, Vector( 9, 7 ) );
+	EXPECT_EQ( pos.getX(), 9 );
+	EXPECT_EQ( pos.getY(), 7 );
+}
+
+TEST(VectorTest, IsSubtractive)
+{
+	Vector pos(3, 5);
+	Vector pos_(6, 1);
+	Vector res = pos - pos_;
+
+	EXPECT_EQ( res, Vector( -3, 4 ) );
+	EXPECT_EQ( res.getX(), -3 );
+	EXPECT_EQ( res.getY(), 4);
+}
+
+TEST(VectorTest, IsSubtractiveToSelf)
+{
+	Vector pos(3, 5);
+	Vector pos_(6, 1);
+	pos -= pos_;
+
+	EXPECT_EQ( pos, Vector( -3, 4 ) );
+	EXPECT_EQ( pos.getX(), -3 );
+	EXPECT_EQ( pos.getY(), 4);
 }

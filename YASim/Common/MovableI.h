@@ -12,7 +12,7 @@ class MovableI
 {
 public:
 
-	typedef std::vector<Vector::value_type> AccVector;
+	//typedef std::vector<Vector::value_type> AccVector;
 
 	virtual void setTarget(const Vector&) = 0;
 	virtual const Vector& getTarget() const = 0;
@@ -29,9 +29,9 @@ public:
 	virtual const Vector::value_type& getMaxAcceleration() const = 0;
 	virtual const Vector::value_type& getMaxSpeed() const = 0;
 
-	virtual const AccVector& getAccVector() const = 0;
+	//virtual const AccVector& getAccVector() const = 0;
 
-	virtual void tick() = 0;// calculate acc from target
+	virtual void accelerate() = 0;// calculate acc from target
 	virtual void move() = 0;// update speed from acc, move position from speed
 };
 

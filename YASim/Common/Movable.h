@@ -31,10 +31,8 @@ public:
 	virtual void setSpeed(const Vector& vec) override { speed = vec; check_max<_speed>(vec); }
 	virtual const Vector& getSpeed() const override { return speed; }
 
-	virtual const AccVector& getAccVector() const = 0;
-
 	virtual void move() override;
-	virtual void tick() override;
+	virtual void accelerate() override;
 
 private:
 
@@ -48,9 +46,6 @@ private:
 	Vector target;
 	Vector acceleration;
 	Vector speed;
-
-	size_t accVecPosX;
-	size_t accVecPosY;
 };
 
 }

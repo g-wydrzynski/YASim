@@ -76,12 +76,16 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Area.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Movable.h" />
     <ClInclude Include="MovableI.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="ThinkableI.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Area.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="MovableI.cpp" />
     <ClCompile Include="Vector.cpp" />

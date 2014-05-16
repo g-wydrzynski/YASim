@@ -7,8 +7,8 @@ using YASim::Common::Vector;
 
 struct TestMovable : Movable
 {
-	TestMovable():Movable(), acc(15), sp(40) { /*init();*/ }
-	TestMovable(const Vector& vec):Movable(vec){ /*init();*/ }
+	TestMovable():Movable(), acc(15), sp(40) {}
+	TestMovable(const Vector& vec):Movable(vec){}
 
 	virtual const Vector::value_type& getMaxAcceleration() const override {return acc;}
 	virtual const Vector::value_type& getMaxSpeed() const override {return sp;}
